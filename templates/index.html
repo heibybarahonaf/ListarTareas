@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tareas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            margin-top: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+        }
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+        .task-item {
+            background: #e3f2fd;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-edit {
+            background-color: #ffc107;
+            color: white;
+            border: none;
+        }
+        .btn-edit:hover {
+            background-color: #e0a800;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+        }
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+        .btn-add {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background-color: #28a745;
+            color: white;
+            margin-top: 15px;
+            border: none;
+            border-radius: 4px;
+        }
+        .btn-add:hover {
+            background-color: #218838;
+        }
+        .logout-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .logout {
+            color: #dc3545;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .logout:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tus Tareas</h1>
+
+        {% if tasks %}
+            <ul class="task-list">
+                {% for task in tasks %}
+                    <li class="task-item">
+                        <div>
+                            <strong>{{ task.title }}</strong>
+                            <p>{{ task.description }}</p>
+                            <small>Fecha límite: {{ task.due_date }}</small>
+                        </div>
+                        <div class="task-actions">
+                            <a href="{{ url_for('edit_task', id=task.id) }}" class="btn btn-edit">Editar</a>
+                            <form action="{{ url_for('delete_task', id=task.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-delete">Eliminar</button>
+                            </form>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="text-align:center;">No tienes tareas registradas.</p>
+        {% endif %}
+
+        <a href="{{ url_for('add_task') }}" class="btn btn-add">Agregar Nueva Tarea</a>
+
+        <div class="logout-container">
+            <a href="{{ url_for('logout') }}" class="logout">Cerrar sesión</a>
+        </div>
+    </div>
+</body>
+</html>
