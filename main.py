@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-import sqlite3
+import sqlite3        
+import os 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 
@@ -172,4 +173,6 @@ def delete_task(id):
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(debug=False, port=5001)
+    port=int(os.environ.get('PORT',5000))   
+    app.run(host='0.0.0.0', port=port)
+
